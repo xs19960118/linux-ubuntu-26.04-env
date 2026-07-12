@@ -1,0 +1,36 @@
+services:
+  etcd:
+    image: ${ETCD_IMAGE}
+    container_name: dev-apisix-etcd
+    restart: unless-stopped
+    environment:
+      ALLOW_NONE_AUTHENTICATION: "yes"
+      ETCD_ADVERTISE_CLIENT_URLS: http://etcd:2379
+    volumes: ["./data/etcd:/bitnami/etcd"]
+    healthcheck:
+      test: ["CMD-SHELL", "etcdctl endpoint health >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks: [dev_apisix_net]
+  apisix:
+    image: ${APISIX_IMAGE}
+    container_name: dev-apisix
+    restart: unless-stopped
+    ports:
+      - "${BIND_HOST}:19080:9080"
+      - "${BIND_HOST}:19443:9443"
+      - "${BIND_HOST}:19180:9180"
+    volumes:
+      - ./conf/config.yaml:/usr/local/apisix/conf/config.yaml:ro
+      - ./logs:/usr/local/apisix/logs
+    depends_on: { etcd: { condition: service_healthy } }
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:9080/apisix/admin/routes -H 'X-API-KEY: xsailxma' >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks: [dev_apisix_net]
+networks:
+  dev_apisix_net:
+    name: dev_apisix_net

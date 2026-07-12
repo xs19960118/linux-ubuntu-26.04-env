@@ -1,0 +1,42 @@
+services:
+  nacos-mysql:
+    image: ${MYSQL_IMAGE}
+    container_name: dev-nacos-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes: ["./data/mysql:/var/lib/mysql"]
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks: [dev_nacos_net]
+  nacos:
+    image: ${NACOS_IMAGE}
+    container_name: dev-nacos
+    restart: unless-stopped
+    ports:
+      - "${BIND_HOST}:18848:8848"
+      - "${BIND_HOST}:19848:9848"
+      - "${BIND_HOST}:19849:9849"
+    environment:
+      MODE: standalone
+      SPRING_DATASOURCE_PLATFORM: mysql
+      MYSQL_SERVICE_HOST: nacos-mysql
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_DB_NAME: ${MYSQL_DATABASE}
+      MYSQL_SERVICE_USER: ${MYSQL_USER}
+      MYSQL_SERVICE_PASSWORD: ${MYSQL_PASSWORD}
+      NACOS_AUTH_ENABLE: "true"
+      NACOS_AUTH_TOKEN: xsailxma-xsailxma-xsailxma-xsailxma
+      NACOS_AUTH_IDENTITY_KEY: xs
+      NACOS_AUTH_IDENTITY_VALUE: xsailxma
+    depends_on: { nacos-mysql: { condition: service_healthy } }
+    networks: [dev_nacos_net]
+networks:
+  dev_nacos_net:
+    name: dev_nacos_net

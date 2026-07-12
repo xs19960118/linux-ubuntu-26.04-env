@@ -1,0 +1,37 @@
+services:
+  rabbitmq-1: &rabbitmq
+    image: ${RABBITMQ_IMAGE}
+    container_name: dev-rabbitmq-cluster-1
+    restart: unless-stopped
+    hostname: rabbitmq-1
+    ports:
+      - "${BIND_HOST}:25672:5672"
+      - "${BIND_HOST}:25673:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+    volumes: ["./data/node-1:/var/lib/rabbitmq", "./logs/node-1:/var/log/rabbitmq"]
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks: [dev_rabbitmq_cluster_net]
+  rabbitmq-2:
+    <<: *rabbitmq
+    container_name: dev-rabbitmq-cluster-2
+    hostname: rabbitmq-2
+    ports: ["${BIND_HOST}:35672:5672"]
+    volumes: ["./data/node-2:/var/lib/rabbitmq", "./logs/node-2:/var/log/rabbitmq"]
+    depends_on: { rabbitmq-1: { condition: service_healthy } }
+  rabbitmq-3:
+    <<: *rabbitmq
+    container_name: dev-rabbitmq-cluster-3
+    hostname: rabbitmq-3
+    ports: ["${BIND_HOST}:45672:5672"]
+    volumes: ["./data/node-3:/var/lib/rabbitmq", "./logs/node-3:/var/log/rabbitmq"]
+    depends_on: { rabbitmq-1: { condition: service_healthy } }
+networks:
+  dev_rabbitmq_cluster_net:
+    name: dev_rabbitmq_cluster_net

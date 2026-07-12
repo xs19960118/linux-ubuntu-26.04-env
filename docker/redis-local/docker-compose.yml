@@ -1,0 +1,27 @@
+services:
+  redis:
+    image: ${REDIS_IMAGE}
+    container_name: ${REDIS_CONTAINER_NAME}
+    restart: unless-stopped
+    ports:
+      - "${BIND_HOST}:${REDIS_HOST_PORT}:${REDIS_CONTAINER_PORT}"
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    volumes:
+      - ./conf/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - ./data:/data
+      - ./logs:/var/log/redis
+      - ./runtime:/var/run/redis
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a $${REDIS_PASSWORD} ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    networks:
+      - dev_redis_local_net
+
+networks:
+  dev_redis_local_net:
+    name: dev_redis_local_net

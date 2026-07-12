@@ -1,0 +1,20 @@
+services:
+  consul:
+    image: ${CONSUL_IMAGE}
+    container_name: dev-consul
+    restart: unless-stopped
+    command: ["agent", "-server", "-bootstrap-expect=1", "-ui", "-client=0.0.0.0", "-data-dir=/consul/data"]
+    ports:
+      - "${BIND_HOST}:18500:8500"
+      - "${BIND_HOST}:18600:8600/tcp"
+      - "${BIND_HOST}:18600:8600/udp"
+    volumes: ["./data:/consul/data", "./conf:/consul/config"]
+    healthcheck:
+      test: ["CMD-SHELL", "consul members >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks: [dev_consul_net]
+networks:
+  dev_consul_net:
+    name: dev_consul_net

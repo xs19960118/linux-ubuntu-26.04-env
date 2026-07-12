@@ -1,0 +1,33 @@
+services:
+  mysql:
+    image: ${MYSQL_IMAGE}
+    container_name: ${MYSQL_CONTAINER_NAME}
+    restart: unless-stopped
+    ports:
+      - "${BIND_HOST}:${MYSQL_HOST_PORT}:${MYSQL_CONTAINER_PORT}"
+    environment:
+      TZ: ${MYSQL_TZ}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    command:
+      - --defaults-file=/etc/mysql/conf.d/my.cnf
+    volumes:
+      - ./conf/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+      - ./data:/var/lib/mysql
+      - ./logs:/var/log/mysql
+      - ./runtime:/var/run/mysqld
+      - ./scripts/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    networks:
+      - dev_mysql_local_net
+
+networks:
+  dev_mysql_local_net:
+    name: dev_mysql_local_net

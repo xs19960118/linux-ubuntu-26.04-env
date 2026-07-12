@@ -1,0 +1,6 @@
+**/data/
+**/logs/
+**/runtime/
+**/backup/
+**/.env
+**/.DS_Store

@@ -1,0 +1,29 @@
+services:
+  elasticsearch:
+    image: ${ELASTIC_IMAGE}
+    container_name: dev-elasticsearch
+    restart: unless-stopped
+    ports: ["${BIND_HOST}:19200:9200", "${BIND_HOST}:19300:9300"]
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
+    volumes: ["./data/elasticsearch:/usr/share/elasticsearch/data", "./logs/elasticsearch:/usr/share/elasticsearch/logs"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:9200 >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    networks: [dev_elasticsearch_net]
+  kibana:
+    image: ${KIBANA_IMAGE}
+    container_name: dev-kibana
+    restart: unless-stopped
+    ports: ["${BIND_HOST}:15601:5601"]
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    depends_on: { elasticsearch: { condition: service_healthy } }
+    networks: [dev_elasticsearch_net]
+networks:
+  dev_elasticsearch_net:
+    name: dev_elasticsearch_net

@@ -1,0 +1,23 @@
+services:
+  rabbitmq:
+    image: ${RABBITMQ_IMAGE}
+    container_name: dev-rabbitmq-local
+    restart: unless-stopped
+    ports:
+      - "${BIND_HOST}:15672:5672"
+      - "${BIND_HOST}:15673:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - ./data:/var/lib/rabbitmq
+      - ./logs:/var/log/rabbitmq
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks: [dev_rabbitmq_local_net]
+networks:
+  dev_rabbitmq_local_net:
+    name: dev_rabbitmq_local_net

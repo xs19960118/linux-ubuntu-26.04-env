@@ -1,0 +1,70 @@
+services:
+  redis-master:
+    image: ${REDIS_IMAGE}
+    container_name: dev-redis-sentinel-master
+    restart: unless-stopped
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    ports: ["${BIND_HOST}:16410:6379"]
+    volumes: ["./conf/redis-master.conf:/usr/local/etc/redis/redis.conf:ro", "./data/master:/data", "./logs/master:/var/log/redis"]
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a $${REDIS_PASSWORD} ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks: [dev_redis_sentinel_6_net]
+  redis-slave-1:
+    image: ${REDIS_IMAGE}
+    container_name: dev-redis-sentinel-slave-1
+    restart: unless-stopped
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    ports: ["${BIND_HOST}:16411:6379"]
+    volumes: ["./conf/redis-slave-1.conf:/usr/local/etc/redis/redis.conf:ro", "./data/slave-1:/data", "./logs/slave-1:/var/log/redis"]
+    depends_on: { redis-master: { condition: service_healthy } }
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a $${REDIS_PASSWORD} ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks: [dev_redis_sentinel_6_net]
+  redis-slave-2:
+    image: ${REDIS_IMAGE}
+    container_name: dev-redis-sentinel-slave-2
+    restart: unless-stopped
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    ports: ["${BIND_HOST}:16412:6379"]
+    volumes: ["./conf/redis-slave-2.conf:/usr/local/etc/redis/redis.conf:ro", "./data/slave-2:/data", "./logs/slave-2:/var/log/redis"]
+    depends_on: { redis-master: { condition: service_healthy } }
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a $${REDIS_PASSWORD} ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks: [dev_redis_sentinel_6_net]
+  sentinel-1: &sentinel
+    image: ${REDIS_IMAGE}
+    container_name: dev-redis-sentinel-1
+    restart: unless-stopped
+    command: ["redis-sentinel", "/usr/local/etc/redis/sentinel.conf"]
+    ports: ["${BIND_HOST}:26410:26379"]
+    volumes: ["./conf/sentinel-1.conf:/usr/local/etc/redis/sentinel.conf"]
+    depends_on: { redis-master: { condition: service_healthy } }
+    networks: [dev_redis_sentinel_6_net]
+  sentinel-2:
+    <<: *sentinel
+    container_name: dev-redis-sentinel-2
+    ports: ["${BIND_HOST}:26411:26379"]
+    volumes: ["./conf/sentinel-2.conf:/usr/local/etc/redis/sentinel.conf"]
+  sentinel-3:
+    <<: *sentinel
+    container_name: dev-redis-sentinel-3
+    ports: ["${BIND_HOST}:26412:26379"]
+    volumes: ["./conf/sentinel-3.conf:/usr/local/etc/redis/sentinel.conf"]
+networks:
+  dev_redis_sentinel_6_net:
+    name: dev_redis_sentinel_6_net

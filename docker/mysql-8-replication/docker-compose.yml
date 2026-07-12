@@ -1,0 +1,81 @@
+services:
+  mysql-master:
+    image: ${MYSQL_IMAGE}
+    container_name: dev-mysql-master
+    restart: unless-stopped
+    ports:
+      - "${BIND_HOST}:13310:3306"
+    environment:
+      TZ: ${MYSQL_TZ}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./conf/master/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+      - ./data/master:/var/lib/mysql
+      - ./logs/master:/var/log/mysql
+      - ./scripts/init/master:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    networks: [dev_mysql_8_replication_net]
+
+  mysql-slave-1:
+    image: ${MYSQL_IMAGE}
+    container_name: dev-mysql-slave-1
+    restart: unless-stopped
+    ports:
+      - "${BIND_HOST}:13311:3306"
+    environment:
+      TZ: ${MYSQL_TZ}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - ./conf/slave1/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+      - ./data/slave1:/var/lib/mysql
+      - ./logs/slave1:/var/log/mysql
+      - ./scripts/init/slave:/docker-entrypoint-initdb.d:ro
+    depends_on:
+      mysql-master:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    networks: [dev_mysql_8_replication_net]
+
+  mysql-slave-2:
+    image: ${MYSQL_IMAGE}
+    container_name: dev-mysql-slave-2
+    restart: unless-stopped
+    ports:
+      - "${BIND_HOST}:13312:3306"
+    environment:
+      TZ: ${MYSQL_TZ}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - ./conf/slave2/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+      - ./data/slave2:/var/lib/mysql
+      - ./logs/slave2:/var/log/mysql
+      - ./scripts/init/slave:/docker-entrypoint-initdb.d:ro
+    depends_on:
+      mysql-master:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    networks: [dev_mysql_8_replication_net]
+
+networks:
+  dev_mysql_8_replication_net:
+    name: dev_mysql_8_replication_net

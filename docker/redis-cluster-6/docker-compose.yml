@@ -1,0 +1,48 @@
+services:
+  redis-node-1: &redis-node
+    image: ${REDIS_IMAGE}
+    container_name: dev-redis-cluster-1
+    restart: unless-stopped
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    ports:
+      - "${BIND_HOST}:16400:6379"
+    volumes:
+      - ./conf/redis-node-1.conf:/usr/local/etc/redis/redis.conf:ro
+      - ./data/node-1:/data
+      - ./logs/node-1:/var/log/redis
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a $${REDIS_PASSWORD} ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks: [dev_redis_cluster_6_net]
+  redis-node-2:
+    <<: *redis-node
+    container_name: dev-redis-cluster-2
+    ports: ["${BIND_HOST}:16401:6379"]
+    volumes: ["./conf/redis-node-2.conf:/usr/local/etc/redis/redis.conf:ro", "./data/node-2:/data", "./logs/node-2:/var/log/redis"]
+  redis-node-3:
+    <<: *redis-node
+    container_name: dev-redis-cluster-3
+    ports: ["${BIND_HOST}:16402:6379"]
+    volumes: ["./conf/redis-node-3.conf:/usr/local/etc/redis/redis.conf:ro", "./data/node-3:/data", "./logs/node-3:/var/log/redis"]
+  redis-node-4:
+    <<: *redis-node
+    container_name: dev-redis-cluster-4
+    ports: ["${BIND_HOST}:16403:6379"]
+    volumes: ["./conf/redis-node-4.conf:/usr/local/etc/redis/redis.conf:ro", "./data/node-4:/data", "./logs/node-4:/var/log/redis"]
+  redis-node-5:
+    <<: *redis-node
+    container_name: dev-redis-cluster-5
+    ports: ["${BIND_HOST}:16404:6379"]
+    volumes: ["./conf/redis-node-5.conf:/usr/local/etc/redis/redis.conf:ro", "./data/node-5:/data", "./logs/node-5:/var/log/redis"]
+  redis-node-6:
+    <<: *redis-node
+    container_name: dev-redis-cluster-6
+    ports: ["${BIND_HOST}:16405:6379"]
+    volumes: ["./conf/redis-node-6.conf:/usr/local/etc/redis/redis.conf:ro", "./data/node-6:/data", "./logs/node-6:/var/log/redis"]
+networks:
+  dev_redis_cluster_6_net:
+    name: dev_redis_cluster_6_net

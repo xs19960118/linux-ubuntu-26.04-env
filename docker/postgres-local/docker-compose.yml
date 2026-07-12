@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE}
+    container_name: ${POSTGRES_CONTAINER_NAME}
+    restart: unless-stopped
+    ports:
+      - "${BIND_HOST}:${POSTGRES_HOST_PORT}:${POSTGRES_CONTAINER_PORT}"
+    environment:
+      TZ: ${POSTGRES_TZ}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
+    volumes:
+      - ./conf/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+      - ./data:/var/lib/postgresql/data
+      - ./logs:/var/log/postgresql
+      - ./runtime:/var/run/postgresql
+      - ./scripts/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -h 127.0.0.1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    networks:
+      - dev_postgres_local_net
+
+networks:
+  dev_postgres_local_net:
+    name: dev_postgres_local_net
