@@ -1,6 +1,7 @@
 services:
   redis-node-1: &redis-node
     image: ${REDIS_IMAGE}
+    pull_policy: missing
     container_name: dev-redis-cluster-1
     restart: unless-stopped
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]

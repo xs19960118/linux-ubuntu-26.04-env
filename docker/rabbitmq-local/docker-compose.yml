@@ -1,6 +1,7 @@
 services:
   rabbitmq:
     image: ${RABBITMQ_IMAGE}
+    pull_policy: missing
     container_name: dev-rabbitmq-local
     restart: unless-stopped
     ports:

@@ -1,6 +1,7 @@
 services:
   nginx:
     image: ${NGINX_IMAGE}
+    pull_policy: missing
     container_name: ${NGINX_CONTAINER_NAME}
     restart: unless-stopped
     ports:

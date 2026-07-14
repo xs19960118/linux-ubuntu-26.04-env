@@ -1,6 +1,7 @@
 services:
   metabase-postgres:
     image: ${POSTGRES_IMAGE}
+    pull_policy: missing
     container_name: dev-metabase-postgres
     restart: unless-stopped
     environment:
@@ -16,6 +17,7 @@ services:
     networks: [dev_metabase_net]
   metabase:
     image: ${METABASE_IMAGE}
+    pull_policy: missing
     container_name: dev-metabase
     restart: unless-stopped
     ports: ["${BIND_HOST}:13001:3000"]

@@ -6,5 +6,41 @@ if [ "${CONFIRM:-}" != "YES" ]; then
   exit 1
 fi
 
-echo "TODO: implement restore for redis-cluster-6."
-exit 1
+if [ $# -ne 1 ]; then
+  echo "Usage: CONFIRM=YES $0 <redis-cluster-backup.tar.gz>"
+  exit 1
+fi
+
+BACKUP_FILE="$1"
+
+if [ ! -f "$BACKUP_FILE" ]; then
+  echo "Backup file not found: $BACKUP_FILE"
+  exit 1
+fi
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SERVICE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+containers=(
+  dev-redis-cluster-1
+  dev-redis-cluster-2
+  dev-redis-cluster-3
+  dev-redis-cluster-4
+  dev-redis-cluster-5
+  dev-redis-cluster-6
+)
+
+tar -C "$TMP_DIR" -xzf "$BACKUP_FILE"
+docker compose -f "$SERVICE_DIR/docker-compose.yml" --env-file "$SERVICE_DIR/.env" up -d
+docker compose -f "$SERVICE_DIR/docker-compose.yml" --env-file "$SERVICE_DIR/.env" stop
+
+for index in "${!containers[@]}"; do
+  node="node-$((index + 1))"
+  docker cp "$TMP_DIR/$node/." "${containers[$index]}:/data"
+done
+
+docker compose -f "$SERVICE_DIR/docker-compose.yml" --env-file "$SERVICE_DIR/.env" start
+
+echo "Restore completed from: $BACKUP_FILE"

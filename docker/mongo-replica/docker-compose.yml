@@ -1,23 +1,21 @@
 services:
   mongo-1:
     image: ${MONGO_IMAGE}
+    pull_policy: missing
     container_name: dev-mongo-replica-1
     restart: unless-stopped
     ports: ["${BIND_HOST}:37020:27017"]
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
     command: ["mongod", "--config", "/etc/mongo/mongod.conf", "--replSet", "${MONGO_REPLICA_SET}"]
     volumes: ["./conf/mongod.conf:/etc/mongo/mongod.conf:ro", "./data/node-1:/data/db", "./logs/node-1:/var/log/mongodb", "./scripts/init:/docker-entrypoint-initdb.d:ro"]
     healthcheck:
-      test: ["CMD-SHELL", "mongosh --quiet -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --authenticationDatabase admin --eval 'db.adminCommand({ ping: 1 }).ok' | grep 1"]
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.adminCommand({ ping: 1 }).ok' | grep 1"]
       interval: 10s
       timeout: 5s
       retries: 12
     networks: [dev_mongo_replica_net]
   mongo-2:
     image: ${MONGO_IMAGE}
+    pull_policy: missing
     container_name: dev-mongo-replica-2
     restart: unless-stopped
     ports: ["${BIND_HOST}:37021:27017"]
@@ -26,6 +24,7 @@ services:
     networks: [dev_mongo_replica_net]
   mongo-3:
     image: ${MONGO_IMAGE}
+    pull_policy: missing
     container_name: dev-mongo-replica-3
     restart: unless-stopped
     ports: ["${BIND_HOST}:37022:27017"]

@@ -1,6 +1,7 @@
 services:
   elasticsearch:
     image: ${ELASTIC_IMAGE}
+    pull_policy: missing
     container_name: dev-elasticsearch
     restart: unless-stopped
     ports: ["${BIND_HOST}:19200:9200", "${BIND_HOST}:19300:9300"]
@@ -17,6 +18,7 @@ services:
     networks: [dev_elasticsearch_net]
   kibana:
     image: ${KIBANA_IMAGE}
+    pull_policy: missing
     container_name: dev-kibana
     restart: unless-stopped
     ports: ["${BIND_HOST}:15601:5601"]

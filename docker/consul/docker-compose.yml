@@ -1,6 +1,7 @@
 services:
   consul:
     image: ${CONSUL_IMAGE}
+    pull_policy: missing
     container_name: dev-consul
     restart: unless-stopped
     command: ["agent", "-server", "-bootstrap-expect=1", "-ui", "-client=0.0.0.0", "-data-dir=/consul/data"]

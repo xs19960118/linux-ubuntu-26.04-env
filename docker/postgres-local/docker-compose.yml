@@ -1,6 +1,7 @@
 services:
   postgres:
     image: ${POSTGRES_IMAGE}
+    pull_policy: missing
     container_name: ${POSTGRES_CONTAINER_NAME}
     restart: unless-stopped
     ports:

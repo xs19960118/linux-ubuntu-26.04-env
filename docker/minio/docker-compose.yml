@@ -1,6 +1,7 @@
 services:
   minio:
     image: ${MINIO_IMAGE}
+    pull_policy: missing
     container_name: dev-minio
     restart: unless-stopped
     command: server /data --console-address ":9001"

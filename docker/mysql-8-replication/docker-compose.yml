@@ -1,6 +1,7 @@
 services:
   mysql-master:
     image: ${MYSQL_IMAGE}
+    pull_policy: missing
     container_name: dev-mysql-master
     restart: unless-stopped
     ports:
@@ -26,6 +27,7 @@ services:
 
   mysql-slave-1:
     image: ${MYSQL_IMAGE}
+    pull_policy: missing
     container_name: dev-mysql-slave-1
     restart: unless-stopped
     ports:
@@ -52,6 +54,7 @@ services:
 
   mysql-slave-2:
     image: ${MYSQL_IMAGE}
+    pull_policy: missing
     container_name: dev-mysql-slave-2
     restart: unless-stopped
     ports:

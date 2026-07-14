@@ -1,6 +1,7 @@
 services:
   nacos-mysql:
     image: ${MYSQL_IMAGE}
+    pull_policy: missing
     container_name: dev-nacos-mysql
     restart: unless-stopped
     environment:
@@ -17,6 +18,7 @@ services:
     networks: [dev_nacos_net]
   nacos:
     image: ${NACOS_IMAGE}
+    pull_policy: missing
     container_name: dev-nacos
     restart: unless-stopped
     ports:
@@ -31,8 +33,9 @@ services:
       MYSQL_SERVICE_DB_NAME: ${MYSQL_DATABASE}
       MYSQL_SERVICE_USER: ${MYSQL_USER}
       MYSQL_SERVICE_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_SERVICE_DB_PARAM: ${MYSQL_SERVICE_DB_PARAM}
       NACOS_AUTH_ENABLE: "true"
-      NACOS_AUTH_TOKEN: xsailxma-xsailxma-xsailxma-xsailxma
+      NACOS_AUTH_TOKEN: ${NACOS_AUTH_TOKEN}
       NACOS_AUTH_IDENTITY_KEY: xs
       NACOS_AUTH_IDENTITY_VALUE: xsailxma
     depends_on: { nacos-mysql: { condition: service_healthy } }

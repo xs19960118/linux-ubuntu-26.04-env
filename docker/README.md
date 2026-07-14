@@ -12,6 +12,18 @@ Docker 根目录：
 /home/xs/workplace/开发环境搭建/plan.md
 ```
 
+日常 Docker 操作指南：
+
+```text
+/home/xs/workplace/docker/Docker操作指南.md
+```
+
+中文服务说明和端口表：
+
+```text
+/home/xs/workplace/docker/服务说明.md
+```
+
 统一账号密码：
 
 ```text

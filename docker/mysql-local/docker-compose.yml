@@ -1,6 +1,7 @@
 services:
   mysql:
     image: ${MYSQL_IMAGE}
+    pull_policy: missing
     container_name: ${MYSQL_CONTAINER_NAME}
     restart: unless-stopped
     ports:

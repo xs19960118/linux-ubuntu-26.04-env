@@ -1,20 +1,30 @@
 services:
   etcd:
     image: ${ETCD_IMAGE}
+    pull_policy: missing
     container_name: dev-apisix-etcd
     restart: unless-stopped
-    environment:
-      ALLOW_NONE_AUTHENTICATION: "yes"
-      ETCD_ADVERTISE_CLIENT_URLS: http://etcd:2379
-    volumes: ["./data/etcd:/bitnami/etcd"]
+    command:
+      - /usr/local/bin/etcd
+      - --name=etcd
+      - --data-dir=/etcd-data
+      - --listen-client-urls=http://0.0.0.0:2379
+      - --advertise-client-urls=http://etcd:2379
+      - --listen-peer-urls=http://0.0.0.0:2380
+      - --initial-advertise-peer-urls=http://etcd:2380
+      - --initial-cluster=etcd=http://etcd:2380
+      - --initial-cluster-state=new
+      - --initial-cluster-token=dev-apisix-etcd
+    volumes: ["./data/etcd:/etcd-data"]
     healthcheck:
-      test: ["CMD-SHELL", "etcdctl endpoint health >/dev/null 2>&1"]
+      test: ["CMD", "/usr/local/bin/etcdctl", "--endpoints=http://127.0.0.1:2379", "endpoint", "health"]
       interval: 10s
       timeout: 5s
       retries: 12
     networks: [dev_apisix_net]
   apisix:
     image: ${APISIX_IMAGE}
+    pull_policy: missing
     container_name: dev-apisix
     restart: unless-stopped
     ports:
@@ -23,10 +33,9 @@ services:
       - "${BIND_HOST}:19180:9180"
     volumes:
       - ./conf/config.yaml:/usr/local/apisix/conf/config.yaml:ro
-      - ./logs:/usr/local/apisix/logs
     depends_on: { etcd: { condition: service_healthy } }
     healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:9080/apisix/admin/routes -H 'X-API-KEY: xsailxma' >/dev/null"]
+      test: ["CMD", "bash", "-ec", "exec 3<>/dev/tcp/127.0.0.1/9080"]
       interval: 10s
       timeout: 5s
       retries: 12
