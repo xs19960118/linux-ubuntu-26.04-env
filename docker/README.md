@@ -3,25 +3,25 @@
 Docker 根目录：
 
 ```text
-/home/xs/workplace/docker
+/home/xs/docker-env/docker
 ```
 
 详细实施计划：
 
 ```text
-/home/xs/workplace/开发环境搭建/plan.md
+/home/xs/docker-env/开发环境搭建/plan.md
 ```
 
 日常 Docker 操作指南：
 
 ```text
-/home/xs/workplace/docker/Docker操作指南.md
+/home/xs/docker-env/docker/Docker操作指南.md
 ```
 
 中文服务说明和端口表：
 
 ```text
-/home/xs/workplace/docker/服务说明.md
+/home/xs/docker-env/docker/服务说明.md
 ```
 
 统一账号密码：
@@ -34,7 +34,7 @@ password: xsailxma
 启动某个服务：
 
 ```bash
-cd /home/xs/workplace/docker/<service-name>
+cd /home/xs/docker-env/docker/<service-name>
 docker compose up -d
 ```
 
@@ -90,7 +90,7 @@ consul
 
 ```bash
 for d in mysql-local redis-local mongo-local postgres-local nginx mysql-8-replication redis-cluster-6 redis-sentinel-6 mongo-replica kafka-local kafka-cluster rabbitmq-local rabbitmq-cluster apisix minio elasticsearch prometheus-grafana metabase nacos consul; do
-  cd "/home/xs/workplace/docker/$d"
+  cd "/home/xs/docker-env/docker/$d"
   cp .env.example .env
   docker compose config >/dev/null
   rm -f .env

@@ -8,7 +8,7 @@
 - Docker Compose 已安装：`Docker Compose version v5.1.4`
 - Docker daemon 正在运行，当前用户 `xs` 已在 `docker` 组，可直接执行 `docker` 命令。
 - `docker.service`、`containerd.service` 均已启用开机自启动。
-- `/home/xs/workplace/docker` 下 20 个服务目录已存在。
+- `/home/xs/docker-env/docker` 下 20 个服务目录已存在。
 - 20 个服务目录均已从 `.env.example` 生成本地 `.env`。
 - 20 个 `docker-compose.yml` 均通过 `docker compose config` 静态校验。
 - 每个服务目录均包含 `conf/`、`data/`、`logs/`、`runtime/`、`backup/`、`scripts/`。
@@ -20,11 +20,11 @@
 - Docker Compose 全量开发环境已一次性启动：20 组 Compose 项目均为 `running`，共 46 个容器。
 - 所有 Docker 开发容器均为 `restart: unless-stopped`，Docker daemon 启动后会自动恢复。
 - 已新增 Docker 全量脚本：
-  - `/home/xs/workplace/docker/scripts/pull-all-images-cn.sh`：通过国内镜像源拉取并标记所需镜像。
-  - `/home/xs/workplace/docker/scripts/up-all.sh`：一次性启动全部服务，并初始化 Nacos 数据库、Redis Cluster。
-  - `/home/xs/workplace/docker/scripts/ps-all.sh`：按服务目录查看所有容器状态。
-- 已新增中文服务说明：`/home/xs/workplace/docker/服务说明.md`。
-- 已新增 Docker 操作指南：`/home/xs/workplace/docker/Docker操作指南.md`，覆盖全量启动、状态查看、日志、进入容器、备份恢复、清理和排障命令。
+  - `/home/xs/docker-env/docker/scripts/pull-all-images-cn.sh`：通过国内镜像源拉取并标记所需镜像。
+  - `/home/xs/docker-env/docker/scripts/up-all.sh`：一次性启动全部服务，并初始化 Nacos 数据库、Redis Cluster。
+  - `/home/xs/docker-env/docker/scripts/ps-all.sh`：按服务目录查看所有容器状态。
+- 已新增中文服务说明：`/home/xs/docker-env/docker/服务说明.md`。
+- 已新增 Docker 操作指南：`/home/xs/docker-env/docker/Docker操作指南.md`，覆盖全量启动、状态查看、日志、进入容器、备份恢复、清理和排障命令。
 - 已补齐 Docker 中原本占位的备份/恢复脚本：
   - `minio/scripts/backup.sh`、`minio/scripts/restore.sh`
   - `mongo-replica/scripts/backup.sh`、`mongo-replica/scripts/restore.sh`
@@ -88,9 +88,9 @@
 - `~/.bashrc` 的 `php-switch` 已改为动态检测已安装 PHP 版本，当前可切换 `5.6`、`7.1`、`7.4`、`8.1`、`8.4`、`8.5`。
 - `~/.bashrc` 已加入 `php-list` 和 `php-info-current`，用于查看每个 PHP 版本的 CLI / FPM / dev / PEAR 状态和当前 PHP 配置。
 - 已确认 `https://packages.sury.org/php/` 存在 Ubuntu 26.04 `resolute` 仓库，并提供 `php5.6`、`php7.1`、`php7.4`、`php8.1`、`php8.4`、`php8.5` 的 CLI / FPM / dev / 常用扩展包。
-- 已生成宿主机 PHP 多版本安装脚本：`/home/xs/workplace/开发环境搭建/install-php-multiversion.sh`。
+- 已生成宿主机 PHP 多版本安装脚本：`/home/xs/docker-env/开发环境搭建/install-php-multiversion.sh`。
 - PHP 多版本安装脚本已包含 Kafka 扩展 `phpX.Y-rdkafka`，并安装系统依赖 `librdkafka-dev`。AMQP 扩展同时安装 `librabbitmq-dev`。
-- 已生成 PHP 扩展版本审计脚本：`/home/xs/workplace/开发环境搭建/audit-php-extensions.sh`，用于逐版本检查 `redis`、`mongodb`、`rdkafka`、`amqp`、`memcached`、`imagick`、`xdebug`、`yaml` 等扩展启用状态和版本。
+- 已生成 PHP 扩展版本审计脚本：`/home/xs/docker-env/开发环境搭建/audit-php-extensions.sh`，用于逐版本检查 `redis`、`mongodb`、`rdkafka`、`amqp`、`memcached`、`imagick`、`xdebug`、`yaml` 等扩展启用状态和版本。
 - PHP 多版本已安装后当前审计结果：
   - CLI / FPM / dev：`5.6`、`7.1`、`7.4`、`8.1`、`8.4`、`8.5` 均已安装，且对应 FPM 均为 `active`。
   - Kafka `rdkafka`：`7.1`、`7.4`、`8.1`、`8.4`、`8.5` 已启用，运行时 `librdkafka 2.13.0`；`5.6` 当前缺失，Sury `resolute` 源未提供 `php5.6-rdkafka` 包。
@@ -112,7 +112,7 @@
 - 不再使用 SDKMAN 安装 Java / Maven / Gradle。
 - asdf 已安装：`0.20.0`，二进制位于 `/home/xs/.local/bin/asdf`，数据目录为 `/home/xs/.asdf`。
 - `~/.bashrc` 已按 asdf 0.16+ 新方式配置：加入 `${ASDF_DATA_DIR:-$HOME/.asdf}/shims`，并使用 `asdf completion bash`。
-- 已新增 asdf 操作指南：`/home/xs/workplace/开发环境搭建/asdf操作指南.md`。
+- 已新增 asdf 操作指南：`/home/xs/docker-env/开发环境搭建/asdf操作指南.md`。
 - Go 已先用 apt 满足宿主机开发；PHP 多版本已改用 Sury apt 仓库完成主链路。asdf 当前只作为项目特殊版本管理工具，不迁移已跑通的 Java / PHP 主链路。
 - PHP 多版本主链路已完成：`5.6`、`7.1`、`7.4`、`8.1`、`8.4`、`8.5` 的 CLI / FPM / dev 均已安装，FPM 均为 `active`。
 - PHP 扩展仍有两个明确缺口：`php5.6-rdkafka` 和 `php7.4-mongodb` 在当前 Sury `resolute` 源未提供包。
@@ -120,16 +120,16 @@
 - 宿主机 MongoDB 已安装并运行：`mongod 8.0.26`、`mongosh 2.9.2`，`mongod.service` 为 `active`，监听 `127.0.0.1:27017`。
 - MongoDB 已因当前 Linux 7.x 内核兼容问题配置 systemd override：`GLIBC_TUNABLES=glibc.pthread.rseq=1`。
 - MongoDB 已创建开发账号：`xs / xsailxma`，认证库 `admin`。
-- 已生成宿主机 MongoDB 8.0 兼容安装脚本：`/home/xs/workplace/开发环境搭建/install-mongodb-local.sh`。说明：MongoDB 官方暂未提供 Ubuntu 26.04 专用仓库，脚本使用官方 Ubuntu 24.04 `noble` 仓库兼容安装。
-- 已生成宿主机 MongoDB 验证脚本：`/home/xs/workplace/开发环境搭建/check-mongodb-local.sh`。
-- 已生成 MongoDB 账号初始化脚本：`/home/xs/workplace/开发环境搭建/init-mongodb-user.sh`。
+- 已生成宿主机 MongoDB 8.0 兼容安装脚本：`/home/xs/docker-env/开发环境搭建/install-mongodb-local.sh`。说明：MongoDB 官方暂未提供 Ubuntu 26.04 专用仓库，脚本使用官方 Ubuntu 24.04 `noble` 仓库兼容安装。
+- 已生成宿主机 MongoDB 验证脚本：`/home/xs/docker-env/开发环境搭建/check-mongodb-local.sh`。
+- 已生成 MongoDB 账号初始化脚本：`/home/xs/docker-env/开发环境搭建/init-mongodb-user.sh`。
 - 宿主机 Nginx 已安装：`nginx/1.28.3 (Ubuntu)`，服务为 `active`。
-- 已生成宿主机 Nginx + 多 PHP-FPM 测试站点安装脚本：`/home/xs/workplace/开发环境搭建/install-nginx-php-sites.sh`。
-- 已生成宿主机 Nginx 多 PHP-FPM 测试脚本：`/home/xs/workplace/开发环境搭建/check-nginx-php-sites.sh`。
+- 已生成宿主机 Nginx + 多 PHP-FPM 测试站点安装脚本：`/home/xs/docker-env/开发环境搭建/install-nginx-php-sites.sh`。
+- 已生成宿主机 Nginx 多 PHP-FPM 测试脚本：`/home/xs/docker-env/开发环境搭建/check-nginx-php-sites.sh`。
 - 宿主机 Nginx 已验证 6 个 PHP-FPM 测试站点可访问：`php56.xs.local`、`php71.xs.local`、`php74.xs.local`、`php81.xs.local`、`php84.xs.local`、`php85.xs.local`。
 - 宿主机 APISIX 未安装；当前决策为使用 Docker APISIX，已启动并验证通过。
-- Kafka 不再做宿主机安装，按当前决策使用 Docker Compose：`/home/xs/workplace/docker/kafka-local` 或 `kafka-cluster`。
-- APISIX 不再做宿主机安装，按当前决策使用 Docker Compose：`/home/xs/workplace/docker/apisix`，当前已运行。
+- Kafka 不再做宿主机安装，按当前决策使用 Docker Compose：`/home/xs/docker-env/docker/kafka-local` 或 `kafka-cluster`。
+- APISIX 不再做宿主机安装，按当前决策使用 Docker Compose：`/home/xs/docker-env/docker/apisix`，当前已运行。
 - 当前 Ubuntu 26.04 apt 源可直接安装：
   - MySQL：`mysql-server`，候选版本 `8.4.10`。
   - Redis：`redis-server`，候选版本 `8.0.5`。
@@ -152,7 +152,7 @@ sudo apt install -y openjdk-17-jdk maven golang-go yq sqlite3 autoconf bison re2
 ## Docker 验证命令
 
 ```bash
-cd /home/xs/workplace/docker
+cd /home/xs/docker-env/docker
 docker compose ls --all
 ./scripts/check-structure.sh
 ./scripts/check-ports.sh
@@ -171,8 +171,8 @@ make ps SERVICE=apisix
 需要 sudo 密码，在终端执行：
 
 ```bash
-sudo bash "/home/xs/workplace/开发环境搭建/install-mongodb-local.sh"
-"/home/xs/workplace/开发环境搭建/check-mongodb-local.sh"
+sudo bash "/home/xs/docker-env/开发环境搭建/install-mongodb-local.sh"
+"/home/xs/docker-env/开发环境搭建/check-mongodb-local.sh"
 ```
 
 脚本会安装 `mongodb-org`、`mongodb-mongosh`，启动 `mongod`，并创建开发账号：
@@ -216,7 +216,7 @@ php -m | sort
 需要 sudo 密码，在终端执行：
 
 ```bash
-sudo bash "/home/xs/workplace/开发环境搭建/install-php-multiversion.sh"
+sudo bash "/home/xs/docker-env/开发环境搭建/install-php-multiversion.sh"
 source ~/.bashrc
 php-list
 php-switch
@@ -230,7 +230,7 @@ php-info-current
 ```bash
 sudo apt install -y php5.6-amqp php7.1-amqp php7.4-amqp php8.1-amqp php8.4-amqp php8.5-amqp
 sudo systemctl restart php5.6-fpm php7.1-fpm php7.4-fpm php8.1-fpm php8.4-fpm php8.5-fpm
-"/home/xs/workplace/开发环境搭建/audit-php-extensions.sh"
+"/home/xs/docker-env/开发环境搭建/audit-php-extensions.sh"
 ```
 
 当前 `amqp` 已补齐；如果以后重装系统后再次缺失，再执行上面的补装命令。
@@ -238,7 +238,7 @@ sudo systemctl restart php5.6-fpm php7.1-fpm php7.4-fpm php8.1-fpm php8.4-fpm ph
 安装完成后审计每个 PHP 版本的扩展和扩展版本：
 
 ```bash
-"/home/xs/workplace/开发环境搭建/audit-php-extensions.sh"
+"/home/xs/docker-env/开发环境搭建/audit-php-extensions.sh"
 ```
 
 ## 宿主机 Nginx / APISIX 状态
@@ -248,7 +248,7 @@ sudo systemctl restart php5.6-fpm php7.1-fpm php7.4-fpm php8.1-fpm php8.4-fpm ph
 ```bash
 nginx -v
 systemctl status nginx --no-pager
-"/home/xs/workplace/开发环境搭建/check-nginx-php-sites.sh"
+"/home/xs/docker-env/开发环境搭建/check-nginx-php-sites.sh"
 ```
 
 已创建这些本地域名和站点：
@@ -262,14 +262,14 @@ http://php84.xs.local -> /run/php/php8.4-fpm.sock
 http://php85.xs.local -> /run/php/php8.5-fpm.sock
 ```
 
-- APISIX：宿主机不安装，当前使用 Docker Compose：`/home/xs/workplace/docker/apisix`。
+- APISIX：宿主机不安装，当前使用 Docker Compose：`/home/xs/docker-env/docker/apisix`。
 
 ## asdf 状态
 
 asdf 已安装完成。常用命令见：
 
 ```bash
-/home/xs/workplace/开发环境搭建/asdf操作指南.md
+/home/xs/docker-env/开发环境搭建/asdf操作指南.md
 ```
 
 注意：PHP 5.6 / 7.1 / 7.4 在 Ubuntu 26.04 上通过 asdf 本机编译成本较高，当前宿主机 PHP 多版本已用 Sury apt 完成，不建议再迁移到 asdf。

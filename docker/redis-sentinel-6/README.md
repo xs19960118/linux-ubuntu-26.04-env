@@ -1,6 +1,6 @@
 # redis-sentinel-6
 
-Service directory: `/home/xs/workplace/docker/redis-sentinel-6`
+Service directory: `/home/xs/docker-env/docker/redis-sentinel-6`
 
 Current status: implemented.
 

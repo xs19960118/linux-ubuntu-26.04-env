@@ -1,6 +1,6 @@
 # nacos
 
-Service directory: `/home/xs/workplace/docker/nacos`
+Service directory: `/home/xs/docker-env/docker/nacos`
 
 Current status: implemented.
 

@@ -1,6 +1,6 @@
 # consul
 
-Service directory: `/home/xs/workplace/docker/consul`
+Service directory: `/home/xs/docker-env/docker/consul`
 
 Current status: implemented.
 

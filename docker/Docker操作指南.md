@@ -3,7 +3,7 @@
 本文只记录日常开发最常用的 Docker 命令。你的 Docker 开发环境根目录是：
 
 ```bash
-cd /home/xs/workplace/docker
+cd /home/xs/docker-env/docker
 ```
 
 ## 最常用
@@ -11,14 +11,14 @@ cd /home/xs/workplace/docker
 全量启动所有开发服务：
 
 ```bash
-cd /home/xs/workplace/docker
+cd /home/xs/docker-env/docker
 ./scripts/up-all.sh
 ```
 
 查看所有服务状态：
 
 ```bash
-cd /home/xs/workplace/docker
+cd /home/xs/docker-env/docker
 ./scripts/ps-all.sh
 docker compose ls --all
 docker ps
@@ -33,7 +33,7 @@ docker ps -a --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}' | grep -E 'Res
 先拉镜像，网络慢时用这个：
 
 ```bash
-cd /home/xs/workplace/docker
+cd /home/xs/docker-env/docker
 ./scripts/pull-all-images-cn.sh
 ```
 
@@ -42,7 +42,7 @@ cd /home/xs/workplace/docker
 进入某个服务目录，例如单机 MySQL：
 
 ```bash
-cd /home/xs/workplace/docker/mysql-local
+cd /home/xs/docker-env/docker/mysql-local
 ```
 
 启动：
@@ -89,10 +89,10 @@ docker compose config
 
 ## 用 Makefile 操作
 
-在 `/home/xs/workplace/docker` 根目录可以这样操作单个服务：
+在 `/home/xs/docker-env/docker` 根目录可以这样操作单个服务：
 
 ```bash
-cd /home/xs/workplace/docker
+cd /home/xs/docker-env/docker
 make ps SERVICE=mysql-local
 make logs SERVICE=nacos
 make restart SERVICE=redis-local
@@ -141,7 +141,7 @@ docker exec dev-mysql-local mysql -uroot -pxsailxma -e 'SHOW DATABASES;'
 更完整的中文服务说明见：
 
 ```bash
-/home/xs/workplace/docker/服务说明.md
+/home/xs/docker-env/docker/服务说明.md
 ```
 
 ## 常用验证
@@ -179,7 +179,7 @@ docker run --rm --network host \
 进入服务目录后执行：
 
 ```bash
-cd /home/xs/workplace/docker/mysql-local
+cd /home/xs/docker-env/docker/mysql-local
 ./scripts/backup.sh
 ```
 
@@ -204,14 +204,14 @@ minio
 恢复会覆盖数据，所以必须显式加 `CONFIRM=YES`：
 
 ```bash
-cd /home/xs/workplace/docker/mysql-local
+cd /home/xs/docker-env/docker/mysql-local
 CONFIRM=YES ./scripts/restore.sh ./backup/xxx.sql.gz
 ```
 
 Redis / MinIO 这类目录型备份也是同样方式：
 
 ```bash
-cd /home/xs/workplace/docker/minio
+cd /home/xs/docker-env/docker/minio
 CONFIRM=YES ./scripts/restore.sh ./backup/minio-YYYYMMDD-HHMMSS.tar.gz
 ```
 
@@ -249,7 +249,7 @@ docker image prune
 docker compose down -v
 docker volume prune
 docker system prune -a --volumes
-rm -rf /home/xs/workplace/docker/*/data
+rm -rf /home/xs/docker-env/docker/*/data
 ```
 
 日常停止服务用 `docker compose down`，不要加 `-v`。
@@ -272,14 +272,14 @@ docker logs -f dev-mysql-local
 重启某一组服务：
 
 ```bash
-cd /home/xs/workplace/docker/nacos
+cd /home/xs/docker-env/docker/nacos
 docker compose restart
 ```
 
 配置改过后重建：
 
 ```bash
-cd /home/xs/workplace/docker/nacos
+cd /home/xs/docker-env/docker/nacos
 docker compose up -d --force-recreate --remove-orphans
 ```
 

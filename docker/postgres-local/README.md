@@ -1,6 +1,6 @@
 # postgres-local
 
-Service directory: `/home/xs/workplace/docker/postgres-local`
+Service directory: `/home/xs/docker-env/docker/postgres-local`
 
 Current status: implemented.
 
@@ -43,6 +43,9 @@ CLI:
 ```bash
 psql -h 127.0.0.1 -p 15432 -U xs -d app_db
 ```
+
+On a new data directory, initialization creates `app_db` and `metabase`, both
+owned by `xs`.
 
 ## Rules
 

@@ -1,6 +1,6 @@
 # kafka-local
 
-Service directory: `/home/xs/workplace/docker/kafka-local`
+Service directory: `/home/xs/docker-env/docker/kafka-local`
 
 Current status: implemented.
 

@@ -1,6 +1,6 @@
 # mongo-replica
 
-Service directory: `/home/xs/workplace/docker/mongo-replica`
+Service directory: `/home/xs/docker-env/docker/mongo-replica`
 
 Current status: implemented.
 

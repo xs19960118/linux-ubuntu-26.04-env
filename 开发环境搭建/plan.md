@@ -10,7 +10,7 @@
 ## 1. 总体目标
 
 - 本地语言运行时安装在 Linux 宿主机。
-- Docker 基础设施统一放在 `/home/xs/workplace/docker`。
+- Docker 基础设施统一放在 `/home/xs/docker-env/docker`。
 - Docker 数据库不占用宿主机默认端口，默认端口留给本地安装的 MySQL、Redis、MongoDB。
 - Docker local 和 cluster 服务允许同时启动，因此 Docker 端口必须全局唯一，不能复用。
 - Docker 端口默认只绑定 `127.0.0.1`，不默认暴露到局域网。
@@ -61,13 +61,13 @@ Nginx: 80, 443
 Docker 根目录固定为：
 
 ```text
-/home/xs/workplace/docker
+/home/xs/docker-env/docker
 ```
 
 根目录后续应包含：
 
 ```text
-/home/xs/workplace/docker/
+/home/xs/docker-env/docker/
   Makefile
   .gitignore
   scripts/
@@ -166,7 +166,7 @@ service-name/
 - `logs/` 双向可查看。
 - `runtime/` 用于放运行时生成文件，不提交 git。
 - `backup/` 用于放备份文件，不提交 git。
-- `data/`、`logs/`、`runtime/`、`backup/` 和 `.env` 必须写入 `/home/xs/workplace/docker/.gitignore`。
+- `data/`、`logs/`、`runtime/`、`backup/` 和 `.env` 必须写入 `/home/xs/docker-env/docker/.gitignore`。
 - `conf/`、`.env.example`、`docker-compose.yml`、`scripts/` 可以纳入版本管理。
 - 挂载目录权限按镜像用户处理，每个服务 README 必须写清需要的 `chown/chmod`。
 
@@ -320,7 +320,7 @@ ports:
 
 ## 10. 每个服务 README 必须包含
 
-每个 `/home/xs/workplace/docker/<service>/README.md` 必须写清：
+每个 `/home/xs/docker-env/docker/<service>/README.md` 必须写清：
 
 - 服务用途。
 - 组件列表。
@@ -451,7 +451,7 @@ Phase 1：文档修正。
 
 Phase 2：目录骨架调整。
 
-- 调整 `/home/xs/workplace/docker` 子目录。
+- 调整 `/home/xs/docker-env/docker` 子目录。
 - 增加 `runtime/`、`backup/`、`.env.example`。
 - 增加根目录 `Makefile` 和 `scripts/`。
 - 删除旧的 `kafka/`、`rabbitmq/` 目录。
@@ -477,8 +477,8 @@ Phase 4：集群和中间件 compose。
 
 当前只写文档，不做以下操作：
 
-- 不创建 `/home/xs/workplace/docker` 下的 compose 文件。
-- 不调整 `/home/xs/workplace/docker` 目录结构。
+- 不创建 `/home/xs/docker-env/docker` 下的 compose 文件。
+- 不调整 `/home/xs/docker-env/docker` 目录结构。
 - 不启动容器。
 - 不安装系统软件。
 - 不修改 `~/.bashrc`。

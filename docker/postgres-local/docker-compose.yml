@@ -19,7 +19,7 @@ services:
       - ./runtime:/var/run/postgresql
       - ./scripts/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -h 127.0.0.1"]
+      test: ["CMD-SHELL", "psql -U $${POSTGRES_USER} -d $${POSTGRES_DB} -h 127.0.0.1 -tAc 'SELECT 1' | grep -qx 1"]
       interval: 10s
       timeout: 5s
       retries: 12

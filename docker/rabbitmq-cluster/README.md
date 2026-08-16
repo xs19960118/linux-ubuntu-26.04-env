@@ -1,6 +1,6 @@
 # rabbitmq-cluster
 
-Service directory: `/home/xs/workplace/docker/rabbitmq-cluster`
+Service directory: `/home/xs/docker-env/docker/rabbitmq-cluster`
 
 Current status: implemented.
 
@@ -26,6 +26,15 @@ docker compose ps
 docker compose logs -f
 docker compose down
 ```
+
+Join nodes 2 and 3 to node 1 after the containers are healthy:
+
+```bash
+./scripts/join-cluster.sh
+```
+
+The script is idempotent. It resets a node only when that node has not joined
+`rabbit@rabbitmq-1` yet.
 
 ## Rules
 

@@ -1,6 +1,6 @@
 # nginx
 
-Service directory: `/home/xs/workplace/docker/nginx`
+Service directory: `/home/xs/docker-env/docker/nginx`
 
 Current status: implemented.
 

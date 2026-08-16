@@ -1,6 +1,6 @@
 # apisix
 
-Service directory: `/home/xs/workplace/docker/apisix`
+Service directory: `/home/xs/docker-env/docker/apisix`
 
 Current status: implemented.
 

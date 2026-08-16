@@ -1,6 +1,6 @@
 # metabase
 
-Service directory: `/home/xs/workplace/docker/metabase`
+Service directory: `/home/xs/docker-env/docker/metabase`
 
 Current status: implemented.
 

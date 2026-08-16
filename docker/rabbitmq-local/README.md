@@ -1,6 +1,6 @@
 # rabbitmq-local
 
-Service directory: `/home/xs/workplace/docker/rabbitmq-local`
+Service directory: `/home/xs/docker-env/docker/rabbitmq-local`
 
 Current status: implemented.
 

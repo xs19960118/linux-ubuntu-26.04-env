@@ -1,6 +1,6 @@
 # prometheus-grafana
 
-Service directory: `/home/xs/workplace/docker/prometheus-grafana`
+Service directory: `/home/xs/docker-env/docker/prometheus-grafana`
 
 Current status: implemented.
 

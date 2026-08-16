@@ -1,6 +1,6 @@
 # mysql-local
 
-Service directory: `/home/xs/workplace/docker/mysql-local`
+Service directory: `/home/xs/docker-env/docker/mysql-local`
 
 Current status: implemented.
 
@@ -31,7 +31,7 @@ docker compose down
 Root Makefile:
 
 ```bash
-cd /home/xs/workplace/docker
+cd /home/xs/docker-env/docker
 make up SERVICE=mysql-local
 make ps SERVICE=mysql-local
 make logs SERVICE=mysql-local

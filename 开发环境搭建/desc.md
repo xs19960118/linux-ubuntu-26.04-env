@@ -7,7 +7,7 @@
 - Linux 本机负责开发工具和多版本语言运行时。
 - Docker 负责数据库、中间件、网关、Web 服务器等基础设施集群。
 - 当前阶段只整理文档和 Docker 目录骨架，不实际安装、不创建 compose、不启动服务。
-- Docker 根目录固定为 `/home/xs/workplace/docker`。
+- Docker 根目录固定为 `/home/xs/docker-env/docker`。
 - 详细实施计划见 `plan.md`。
 
 推荐原则：
@@ -23,7 +23,7 @@
 
 - `desc.md`：总说明、环境规划、目录规划。
 - `plan.md`：可多次执行的实施计划、端口规范、账号规范、挂载规范、自启动规范。
-- `/home/xs/workplace/docker`：后续所有 Docker Compose 服务目录。
+- `/home/xs/docker-env/docker`：后续所有 Docker Compose 服务目录。
 
 统一账号密码：
 
@@ -962,7 +962,7 @@ docker run --rm hello-world
 Docker 根目录：
 
 ```text
-/home/xs/workplace/docker
+/home/xs/docker-env/docker
 ```
 
 后续建议目录：
@@ -2010,9 +2010,9 @@ docker system df
 当前文档只完成规划。后续需要逐个补齐：
 
 - `plan.md` 实施计划。
-- `/home/xs/workplace/docker/Makefile` Docker 统一启动入口。
-- `/home/xs/workplace/docker/scripts/` Docker 全局辅助脚本目录。
-- `/home/xs/workplace/docker/.gitignore`，忽略所有 `data/`、`logs/`、`runtime/`、`backup/`、`.env`。
+- `/home/xs/docker-env/docker/Makefile` Docker 统一启动入口。
+- `/home/xs/docker-env/docker/scripts/` Docker 全局辅助脚本目录。
+- `/home/xs/docker-env/docker/.gitignore`，忽略所有 `data/`、`logs/`、`runtime/`、`backup/`、`.env`。
 - Docker Engine 安装脚本。
 - Java SDKMAN 初始化脚本。
 - Maven SDKMAN 初始化脚本。

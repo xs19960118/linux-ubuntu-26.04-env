@@ -1,6 +1,6 @@
 # redis-cluster-6
 
-Service directory: `/home/xs/workplace/docker/redis-cluster-6`
+Service directory: `/home/xs/docker-env/docker/redis-cluster-6`
 
 Current status: implemented.
 

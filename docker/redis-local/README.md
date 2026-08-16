@@ -1,6 +1,6 @@
 # redis-local
 
-Service directory: `/home/xs/workplace/docker/redis-local`
+Service directory: `/home/xs/docker-env/docker/redis-local`
 
 Current status: implemented.
 

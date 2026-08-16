@@ -1,6 +1,6 @@
 # minio
 
-Service directory: `/home/xs/workplace/docker/minio`
+Service directory: `/home/xs/docker-env/docker/minio`
 
 Current status: implemented.
 

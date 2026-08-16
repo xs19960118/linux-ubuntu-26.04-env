@@ -1,6 +1,6 @@
 # elasticsearch
 
-Service directory: `/home/xs/workplace/docker/elasticsearch`
+Service directory: `/home/xs/docker-env/docker/elasticsearch`
 
 Current status: implemented.
 

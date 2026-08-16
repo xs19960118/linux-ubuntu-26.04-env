@@ -1,6 +1,6 @@
 # mysql-8-replication
 
-Service directory: `/home/xs/workplace/docker/mysql-8-replication`
+Service directory: `/home/xs/docker-env/docker/mysql-8-replication`
 
 Current status: implemented.
 
@@ -26,6 +26,15 @@ docker compose ps
 docker compose logs -f
 docker compose down
 ```
+
+Start or recover both replication channels after the containers are healthy:
+
+```bash
+./scripts/start-replication.sh
+```
+
+The script succeeds only when both the I/O and SQL replication threads are
+running on both replicas.
 
 ## Rules
 
